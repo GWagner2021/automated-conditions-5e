@@ -65,9 +65,12 @@ function _toFiniteNumberOrNull(value) {
 	return Number.isFinite(n) ? n : null;
 }
 
-function _isActiveGmUser(userId) {
-	const activeGmId = game.users.find((u) => u.isGM && u.active)?.id;
-	return !activeGmId || !userId || userId === activeGmId;
+function _isActiveGmUser(_userId) {
+  if (!game.user?.isGM) return false;
+  const activeGmId =
+    game.users.activeGM?.id ?? game.users.find((u) => u.isGM && u.active)?.id;
+  if (activeGmId && game.user.id !== activeGmId) return false;
+  return true;
 }
 
 function _getCadenceBucketEntry(bucket, id) {
